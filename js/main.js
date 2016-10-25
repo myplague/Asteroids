@@ -1,23 +1,5 @@
-// THIS IS YOUR JAVASCRIPT DOCUMENT!
-
-// GENERATE ASTEROIDS IN HTML DOCUMENT
-
-for (var i = 0; i < 100; i++) {
-
-  var asteroid = new Image();
-  asteroid.id = "asteroid" + i.toString();
-  asteroid.src = "asteroid.png";
-  asteroid.style.height = (((Math.random() * 6) + 0)*30);
-  asteroid.style.position = "absolute";
-  asteroid.style.top = (((Math.random() * 6) + 0)*100);
-  asteroid.style.right = -200;
-  var asteroidPosition = asteroid.style.right;
-  var asteroidID = asteroid.id;
-
-  document.body.appendChild(asteroid);
-
-}
-
+import createAsteroides from "./createAsteroids.js";
+import Controles from "./controls.js";
 
 // MOVEMENT CONTROLS FOR SHIP
 
@@ -29,37 +11,16 @@ var ySpeed = 0;
 var maxSpeed = 5;
 
 // declare & initialize controller variables
-var upPressed = 0;
-var downPressed = 0;
-var leftPressed = 0;
-var rightPressed = 0;
+var controles = {
+  upPressed : 0,
+  downPressed : 0,
+  leftPressed : 0,
+  rightPressed : 0
 
-
-function keyDown(playerKeyPress)
-{
-  var keyPressed = playerKeyPress.which;
-  if (keyPressed == 38)
-    upPressed = 1;
-  if (keyPressed == 40)
-    downPressed = 1;
-  if (keyPressed == 37)
-    leftPressed = 1;
-  if (keyPressed == 39)
-    rightPressed = 1;
 }
 
-function keyUp(playerKeyPress)
-{
-  var keyPressed = playerKeyPress.which;
-  if (keyPressed == 38)
-    upPressed = 0;
-  if (keyPressed == 40)
-    downPressed = 0;
-  if (keyPressed == 37)
-    leftPressed = 0;
-  if (keyPressed == 39)
-    rightPressed = 0;
-}
+
+
 
 function slowDownX()
 {
@@ -100,19 +61,19 @@ function gameLoop()
   document.getElementById('ship').style.top = yPosition;
 
   // change speed when user presses keys
-  if (upPressed == 1)
+  if (controles.upPressed == 1)
     ySpeed = Math.max(ySpeed - 1,-1*maxSpeed);
-  if (downPressed == 1)
+  if (controles.downPressed == 1)
     ySpeed = Math.min(ySpeed + 1,1*maxSpeed)
-  if (rightPressed == 1)
+  if (controles.rightPressed == 1)
     xSpeed = Math.min(xSpeed + 1,1*maxSpeed);
-  if (leftPressed == 1)
+  if (controles.leftPressed == 1)
     xSpeed = Math.max(xSpeed - 1,-1*maxSpeed);
 
   // deceleration
-  if (upPressed == 0 && downPressed == 0)
+  if (controles.upPressed == 0 && controles.downPressed == 0)
      slowDownY();
-  if (leftPressed == 0 && rightPressed == 0)
+  if (controles.leftPressed == 0 && controles.rightPressed == 0)
      slowDownX();
 
      // check position of ship on screen
@@ -167,5 +128,10 @@ function gameLoop()
      }
 
   // loop
-  setTimeout("gameLoop()",10);
+  setTimeout(gameLoop,10);
 }
+createAsteroides();
+Controles();
+gameLoop();
+
+export default controles;
